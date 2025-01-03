@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-pipeline
+  namespace: elk
+data:
+  logstash.conf: |
+    input {
+      beats {
+        port => 5044
+      }
+    }
+    output {
+      elasticsearch {
+        hosts => ["${CUSTOM_ELASTICSEARCH_HOSTS}"]
+        user => "${ELASTICSEARCH_USERNAME}"
+        password => "${ELASTICSEARCH_PASSWORD}"
+        ssl => true
+        cacert => "/usr/share/logstash/config/certs/tls.crt"
+        index => "logstash-%{+YYYY.MM.dd}"
+      }
+    }
