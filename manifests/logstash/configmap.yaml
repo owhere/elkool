@@ -9,6 +9,11 @@ data:
       beats {
         port => 5044
       }
+      file {
+        path => "/usr/share/logstash/data/pods/**/*.log"
+        start_position => "beginning"
+        sincedb_path => "/dev/null"  # Prevents skipping files during testing
+      }
     }
     output {
       elasticsearch {
